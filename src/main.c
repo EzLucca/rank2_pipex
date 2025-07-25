@@ -1,21 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/25 15:17:18 by edlucca           #+#    #+#             */
-/*   Updated: 2025/07/25 16:22:57 by edlucca          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../include/pipex.h"
 
 int	ft_exec()
 {
-	int	pid1;
-	int	pid2;
+	pid_t	pid1;
+	pid_t	pid2;
 	int fd[2];
 
 	if (pipe(fd) == -1)
@@ -47,9 +36,14 @@ int	ft_exec()
 	return (0);
 }
 
+void	ft_init_pipex(t_pipex *pipex)
+{
+}
+
 int main()
 {
-	ft_init_pipex();
+	t_pipex	*pipex;
+	ft_init_pipex(pipex);
 	ft_check_args();
 	ft_parse_cmds();
 	ft_parse_args();

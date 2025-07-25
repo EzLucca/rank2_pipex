@@ -1,18 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/25 11:42:53 by edlucca           #+#    #+#             */
-/*   Updated: 2025/07/25 11:44:32 by edlucca          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "../lib/libft/include/libft.h"
+
+typedef struct s_pipex
+{
+}	t_pipex;
+
 #endif // !PIPEX_H
 

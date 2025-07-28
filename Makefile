@@ -32,12 +32,11 @@ $(OBJ_DIR):
 	@mkdir -p $@
 
 clean:
-	# rm -rf $(BUILD_DIR)
-	rm -rf $(OBJ_DIR) $(BUILD_DIR)/src
+	rm -rf $(OBJ_DIR) $(BUILD_DIR)
 	@make --no-print-directory -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -rf $(NAME) $(BUILD_DIR)
+	rm -rf $(NAME) outfile
 	@make --no-print-directory fclean -C $(LIBFT_DIR)
 
 re: fclean all

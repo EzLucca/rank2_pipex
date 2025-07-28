@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 09:19:38 by edlucca           #+#    #+#             */
-/*   Updated: 2025/07/23 10:54:34 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/07/28 10:42:34 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int		count_tokens(const char *s, char c);
 int		ft_min(int a, int b);
 int		ft_max(int a, int b);
 void	ft_free_array(char **array);
+void	ft_error_exit(char *str);
 void	ft_free_tab(void **tab, size_t len);
 int		ft_atoi_base(const char *nptr, const char *base);
 

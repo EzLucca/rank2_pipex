@@ -42,6 +42,14 @@ This project focuses on handling pipes.
 - wait: Waits for any child process to terminate.
 
 - waitpid: Waits for a specific child process to terminate.
+
+## Tasklist
+- [x] Validation - number of arguments; 
+- [ ] Validation - infile exists and have the correct permissions; using access
+- [ ] Parsing - take the enviromental path; 
+- [ ] Parsing - split enviromental path; 
+- [ ] Parsing - find the correct path of the command; 
+
 ## Commands
 The following command will show all the system calls happening.
 ```

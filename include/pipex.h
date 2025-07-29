@@ -15,13 +15,18 @@
 
 typedef struct s_pipex
 {
-	char	**argv;
+	char	**fullpath;
+	char	***argv;
 	char	**envp;
 	int		file_fd[2];
 	int		pipe_fd[2];
+	int		cmds_count;
 	bool	here_doc;
 	bool	invalid_input;
 }	t_pipex;
 
+
+char	**ft_get_env_paths(char **envp);
+char	*ft_find_path(char *cmd, char **envp);
 #endif // !PIPEX_H
 

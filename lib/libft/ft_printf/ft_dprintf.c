@@ -8,9 +8,9 @@ int	format_specifier(int fd, const char *format, va_list *arg_ptr)
 
 	count = 0;
 	if (*format == 'c')
-		count += (size_t)ft_putchar_fd(va_arg(*arg_ptr, int), fd);
+		count += ft_putchar_fd(va_arg(*arg_ptr, int), fd);
 	else if (*format == 's')
-		count += ft_print_str(va_arg(*arg_ptr, char *));
+		count += ft_putstr_fd(va_arg(*arg_ptr, char *), fd);
 	else if (*format == 'p')
 		count += ft_print_ptr(va_arg(*arg_ptr, void *));
 	else if (*format == 'd' || *format == 'i')

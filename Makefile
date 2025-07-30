@@ -11,7 +11,10 @@ INCLUDES    := -I include -I lib/libft/include
 LIBFT_DIR   := lib/libft
 LIBFT_A     := $(LIBFT_DIR)/libft.a
 
-SRC      := $(SRC_DIR)/*.c \
+SRC      := $(SRC_DIR)/main.c \
+			$(SRC_DIR)/path.c \
+			$(SRC_DIR)/parse.c \
+			$(SRC_DIR)/utils.c \
 
 OBJ      := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

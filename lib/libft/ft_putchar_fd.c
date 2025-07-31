@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "include/libft.h"
 
 // Outputs the character ’c’ to the specified file descriptor.
 // File descriptors are int assossiated with an open file or resource
@@ -18,4 +18,5 @@
 int	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
+	return (1);
 }

@@ -9,14 +9,18 @@ char	**ft_get_env_paths(char **envp)
 
 	i = 0;
 	command = "PATH";
+	path = NULL;
 	while (envp[++i])
 	{
 		if(ft_strncmp(command, envp[i], ft_strlen(command)) == 0
 				&& envp[i][ft_strlen(command)] == '=')
+		{
 			path = ft_strchr(envp[i], '=') + 1;
-		if (!path)
-			return (NULL);
+			break ;
+		}
 	}
+	if (!path)
+		return (NULL);
 	return (ft_split(path, ':'));
 }
 
@@ -32,9 +36,9 @@ char	*ft_find_path(char *cmd, char **envp)
 	paths = ft_get_env_paths(envp);
 	if (!paths)
 		return (NULL); // might need review
-	// i = -1;
-	// while (paths[++i])
-	// 	ft_printf("paths: %s\n", paths[i]); // TESTING:
+					   // i = -1;
+					   // while (paths[++i])
+					   // 	ft_printf("paths: %s\n", paths[i]); // TESTING:
 	i = -1;
 	while (paths[++i])
 	{

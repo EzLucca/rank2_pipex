@@ -2,7 +2,7 @@
 #include "../include/ft_printf.h"
 #include "../include/libft.h"
 
-int	format_specifier(int fd, const char *format, va_list *arg_ptr)
+int	format_specifier_fd(int fd, const char *format, va_list *arg_ptr)
 {
 	int	count;
 
@@ -12,15 +12,15 @@ int	format_specifier(int fd, const char *format, va_list *arg_ptr)
 	else if (*format == 's')
 		count += ft_putstr_fd(va_arg(*arg_ptr, char *), fd);
 	else if (*format == 'p')
-		count += ft_print_ptr(va_arg(*arg_ptr, void *));
+		count += ft_print_ptr_fd(va_arg(*arg_ptr, void *), fd);
 	else if (*format == 'd' || *format == 'i')
-		count += ft_print_snbr(va_arg(*arg_ptr, int));
+		count += ft_print_snbr_fd(va_arg(*arg_ptr, int), fd);
 	else if (*format == 'u')
-		count += ft_print_unbr(va_arg(*arg_ptr, unsigned int));
+		count += ft_print_unbr_fd(va_arg(*arg_ptr, unsigned int), fd);
 	else if (*format == 'x' || *format == 'X')
-		count += ft_print_hex(va_arg(*arg_ptr, unsigned int), *format == 'X');
+		count += ft_print_hex_fd(va_arg(*arg_ptr, unsigned int), *format == 'X', fd);
 	else if (*format == '%')
-		count += ft_print_char('%');
+		count += ft_putchar_fd('%', fd);
 	if (*format == '\0')
 		return (-1);
 	return (count);
@@ -48,7 +48,7 @@ int	ft_dprintf(int fd, const char *format, ...)
 	while (*format)
 	{
 		if (*format == '%' && format_validation(format + 1) != 0 && format++)
-			len = format_specifier(fd, format,&arg_ptr);
+			len = format_specifier_fd(fd, format,&arg_ptr);
 		else
 			len = write(fd, format, 1);
 		if (len == -1)

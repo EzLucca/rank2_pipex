@@ -28,6 +28,10 @@ void	ft_clean_pipex(t_pipex *pipex)
 {
 	if (pipex->argv)
 		ft_free_array(*pipex->argv);
+	if (pipex->fullpath)
+		ft_free_2d_array(&pipex->fullpath, sizeof(pipex->cmds_count));
+	if (pipex->pids)
+		free(pipex->pids);
 	// if (pipex->envp)
 	// 	ft_free_array(pipex->envp);
 	if (pipex->invalid_input)
@@ -36,5 +40,6 @@ void	ft_clean_pipex(t_pipex *pipex)
 		unlink(HERE_DOC_PATH);
 	// free(pipex->file_fd);
 	// free(pipex->pipe_fd);
-	free(pipex);
+	// free(pipex);
+	ft_memset(pipex, 0, sizeof(t_pipex));
 }

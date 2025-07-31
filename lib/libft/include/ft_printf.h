@@ -77,4 +77,13 @@ int		ft_print_hex(unsigned long hex, int check_upper);
 int		ft_print_ptr(void *pointer);
 
 char	*ft_strchr(const char *s, int c);
+
+/* ****************************ft_dprintf************************************ */
+
+int	format_specifier_fd(int fd, const char *format, va_list *arg_ptr);
+int	ft_dprintf(int fd, const char *format, ...);
+int	ft_print_hex_fd(unsigned long hex, int check_upper, int fd);
+int	ft_print_ptr_fd(void *pointer, int fd);
+int	ft_print_unbr_fd(unsigned int unbr, int fd);
+int	ft_print_snbr_fd(long nbr, int fd);
 #endif

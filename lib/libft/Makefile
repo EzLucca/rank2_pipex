@@ -68,7 +68,10 @@ GNL_FILES = $(GNL_DIR)/get_next_line.c \
 
 FT_PRINTF_FILES = $(FT_PRINTF_DIR)/ft_printf.c \
 				  $(FT_PRINTF_DIR)/ft_printf_chars.c \
-				  $(FT_PRINTF_DIR)/ft_printf_hex.c 
+				  $(FT_PRINTF_DIR)/ft_printf_hex.c \
+				  $(FT_PRINTF_DIR)/ft_dprintf.c \
+				  $(FT_PRINTF_DIR)/ft_printf_hex_fd.c 
+
 
 # Objects
 LIBFT_OBJECTS = $(patsubst %.c, $(DIR_OBJ)/%.o, $(LIBFT_FILES))

@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "include/libft.h"
 
 // Outputs the integer ’n’ to the specified file descriptor.
 
-void	ft_putnbr_fd(int n, int fd)
+int	ft_putnbr_fd(int n, int fd)
 {
 	int	value;
 
@@ -33,4 +33,5 @@ void	ft_putnbr_fd(int n, int fd)
 		value = n % 10 + 48;
 		write(fd, &value, 1);
 	}
+	return (1);
 }

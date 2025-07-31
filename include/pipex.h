@@ -18,13 +18,16 @@ typedef struct s_pipex
 	char	**fullpath;
 	char	***argv;
 	int		file_fd[2];
-	int		pipe_fd[2];
+	int		pipe_fd[2][2];
 	int		cmds_count;
+	int		return_status;
+	pid_t	*pids;
 	bool	here_doc;
 	bool	invalid_input;
 }	t_pipex;
 
 
+int		wait_processes(pid_t *pid, int cmds_count);
 int		spawn_child(t_pipex *pipex, char **envp, int idx);
 int		fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx);
 int		get_outfile(t_pipex *pipex, int argc, char **argv);

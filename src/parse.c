@@ -6,6 +6,7 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 	int     i;
 	char    **cmd;
 
+	cmd = NULL;
 	pipex->fullpath = ft_calloc(sizeof(char *), pipex->cmds_count);
 	pipex->argv = ft_calloc(sizeof(char **), pipex->cmds_count);
 	if (!pipex->fullpath || !pipex->argv)
@@ -15,7 +16,6 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 		// return (false);
 		return ;
 	}
-
 	i = 1 + pipex->here_doc;
 	while (++i < argc - 1)
 	{
@@ -31,6 +31,7 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 		}
 		pipex->fullpath[i - 2 - pipex->here_doc] = ft_find_path(cmd[0], envp);
 		pipex->argv[i - 2 - pipex->here_doc] = cmd;
+		ft_free_array(cmd);
 	}
 	// int j = -1;
 	// while (pipex->fullpath[++j])
@@ -70,7 +71,7 @@ void	ft_check_args(t_pipex *pipex,int argc, char **argv)
 {
 	if (argc < 5 + pipex->here_doc)
 	{
-		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", STDERR_FILENO);
+		ft_dprintf(STDERR_FILENO, "Usage: ./pipex infile cmd1 cmd2 outfile\n");
 		exit(EXIT_FAILURE);
 	}
 	if (argv[1] && ft_strncmp(argv[1], "here_doc", 8) == 0)

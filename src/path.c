@@ -36,9 +36,6 @@ char	*ft_find_path(char *cmd, char **envp)
 	paths = ft_get_env_paths(envp);
 	if (!paths)
 		return (NULL); // might need review
-					   // i = -1;
-					   // while (paths[++i])
-					   // 	ft_printf("paths: %s\n", paths[i]); // TESTING:
 	i = -1;
 	while (paths[++i])
 	{
@@ -51,7 +48,6 @@ char	*ft_find_path(char *cmd, char **envp)
 			return (ft_free_array(paths), NULL);
 		if (access(full_path, F_OK) == 0)
 			return (ft_free_array(paths), full_path);
-		// ft_printf("full_path: %s\n", full_path); // TESTING:
 		free(full_path);
 	}
 	return (ft_free_array(paths), NULL);

@@ -1,47 +1,44 @@
 
 #include "../include/pipex.h"
 
-void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
+void    ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 {
 	int     i;
 	char    **cmd;
+	char    *path;
 
 	cmd = NULL;
-	pipex->fullpath = ft_calloc(sizeof(char *), pipex->cmds_count);
-	pipex->argv = ft_calloc(sizeof(char **), pipex->cmds_count);
+	pipex->fullpath = ft_calloc(sizeof(char *) + 1, pipex->cmds_count);
+	pipex->argv = ft_calloc(sizeof(char **) + 1, pipex->cmds_count);
 	if (!pipex->fullpath || !pipex->argv)
 	{
 		ft_free_array(pipex->fullpath);
-		ft_free_2d_array(pipex->argv, pipex->cmds_count);
-		// return (false);
+		ft_free_2d_array(pipex->argv);
+		pipex->fullpath = NULL;
+		pipex->argv = NULL;
 		return ;
 	}
-	i = 1 + pipex->here_doc;
+	i = 1;
 	while (++i < argc - 1)
 	{
 		cmd = ft_split(argv[i], ' ');
 		if (!cmd)
-		{
-			ft_free_array(pipex->fullpath);
-			ft_free_2d_array(pipex->argv, i - 2 - pipex->here_doc);
-			pipex->fullpath = NULL;
-			pipex->argv = NULL;
-			return ;
-			// return (false);
-		}
-		pipex->fullpath[i - 2 - pipex->here_doc] = ft_find_path(cmd[0], envp);
-		pipex->argv[i - 2 - pipex->here_doc] = cmd;
-		ft_free_array(cmd);
+			ft_clean_pipex(pipex); // Custom cleanup if allocation fails
+		path = ft_find_path(cmd[0], envp);
+		if (!path)
+			ft_free_array(cmd);
+			// ft_clean_pipex(pipex);
+		pipex->fullpath[i - 2] = path;
+		// ft_printf("fullpath[%d]: %s\n", i, pipex->fullpath[i - 2 - pipex->here_doc]); // TESTING:
+		pipex->argv[i - 2] = cmd;
 	}
-	// int j = -1;
-	// while (pipex->fullpath[++j])
-	// 	ft_printf("pipex->fullpath[%d]: %s\n", j, pipex->fullpath[i - 2 - pipex->here_doc]); // TESTING:
-	return ;
-	// return (true);
 }
 
-int	get_infile(t_pipex *pipex, char **argv)
+int	get_files(t_pipex *pipex, int argc, char **argv)
 {
+	// if (pipex->here_doc)
+	// 	pipex->file_fd[1] = open(argv[4], O_RDWR | O_CREAT | O_APPEND, 0644);
+	// else
 	if (access(argv[1], F_OK) == -1)
 	{
 		perror("infile");
@@ -50,15 +47,7 @@ int	get_infile(t_pipex *pipex, char **argv)
 	}
 	else
 		pipex->file_fd[0] = open(argv[1], O_RDONLY);
-	return (1);
-}
-
-int	get_outfile(t_pipex *pipex, int argc, char **argv)
-{
-	if (pipex->here_doc)
-		pipex->file_fd[1] = open(argv[4], O_RDWR | O_CREAT | O_APPEND, 0644);
-	else
-		pipex->file_fd[1] = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	pipex->file_fd[1] = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pipex->file_fd[1] == -1)
 	{
 		perror("outfile");
@@ -69,14 +58,18 @@ int	get_outfile(t_pipex *pipex, int argc, char **argv)
 
 void	ft_check_args(t_pipex *pipex,int argc, char **argv)
 {
-	if (argc < 5 + pipex->here_doc)
+	if (argc != 5)
 	{
 		ft_dprintf(STDERR_FILENO, "Usage: ./pipex infile cmd1 cmd2 outfile\n");
 		exit(EXIT_FAILURE);
 	}
-	if (argv[1] && ft_strncmp(argv[1], "here_doc", 8) == 0)
-		pipex->here_doc = true;
-	get_infile(pipex, argv);
-	get_outfile(pipex, argc, argv);
+	ft_memset(pipex, 0, sizeof(t_pipex));
+	ft_memset(pipex->pipe_fd, -1, sizeof(pipex->pipe_fd));
+	// pipex->pids = malloc(sizeof(pid_t) * pipex->cmds_count);
+	// if (!pipex->pids)
+	// 	return (EXIT_FAILURE);
 	pipex->cmds_count = argc - 3 - pipex->here_doc;
+	// get_infile(pipex, argv);
+	// get_outfile(pipex, argc, argv);
+	get_files(pipex, argc, argv);
 }

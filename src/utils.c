@@ -1,19 +1,13 @@
 
 #include "../include/pipex.h"
 
-void	ft_free_2d_array(char ***array, int n)
+void	ft_free_2d_array(char ***array)
 {
-	int	i;
+	if (!array || !*array)
+		return ;
 
-	i = -1;
-	if (n == -1)
-		while (array[++i])
-			ft_free_array(array[i]);
-	else
-		while (++i < n)
-			if (array[i])
-				ft_free_array(array[i]);
-	free(array);
+	ft_free_array(*array);
+	*array = NULL;
 }
 
 void	ft_error(char *str, char **argv)
@@ -27,19 +21,14 @@ void	ft_error(char *str, char **argv)
 void	ft_clean_pipex(t_pipex *pipex)
 {
 	if (pipex->argv)
-		ft_free_array(*pipex->argv);
+		ft_free_2d_array(pipex->argv);
 	if (pipex->fullpath)
-		ft_free_2d_array(&pipex->fullpath, sizeof(pipex->cmds_count));
+		ft_free_array(pipex->fullpath);
 	if (pipex->pids)
 		free(pipex->pids);
 	// if (pipex->envp)
 	// 	ft_free_array(pipex->envp);
 	if (pipex->invalid_input)
 		unlink(INVALID_INPUT_PATH);
-	if (pipex->here_doc)
-		unlink(HERE_DOC_PATH);
-	// free(pipex->file_fd);
-	// free(pipex->pipe_fd);
-	// free(pipex);
-	ft_memset(pipex, 0, sizeof(t_pipex));
+	// ft_memset(pipex, 0, sizeof(t_pipex));
 }

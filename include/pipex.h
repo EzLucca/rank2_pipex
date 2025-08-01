@@ -30,8 +30,9 @@ typedef struct s_pipex
 int		wait_processes(pid_t *pid, int cmds_count);
 int		spawn_child(t_pipex *pipex, char **envp, int idx);
 int		fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx);
-int		get_outfile(t_pipex *pipex, int argc, char **argv);
-int		get_infile(t_pipex *pipex, char **argv);
+// int		get_outfile(t_pipex *pipex, int argc, char **argv);
+// int		get_infile(t_pipex *pipex, char **argv);
+int		get_files(t_pipex *pipex, int argc, char **argv);
 char	**ft_get_env_paths(char **envp);
 char	*ft_find_path(char *cmd, char **envp);
 char	*ft_find_path(char *cmd, char **envp);
@@ -40,7 +41,7 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp);
 void	ft_check_args(t_pipex *pipex,int argc, char **argv);
 void	ft_clean_pipex(t_pipex *pipex);
 void	ft_error(char *str, char **argv);
-void	ft_free_2d_array(char ***array, int n);
+void	ft_free_2d_array(char ***array);
 
 #endif // !PIPEX_H
 

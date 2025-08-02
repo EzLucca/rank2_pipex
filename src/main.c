@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/02 19:14:24 by edlucca           #+#    #+#             */
+/*   Updated: 2025/08/02 21:27:36 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/pipex.h"
 
@@ -6,7 +17,7 @@ int	fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx)
 	if (pipe(fd) == -1)
 		return (-1);
 	*pid = fork();
-	if (pid < 0)
+	if (*pid < 0)
 	{
 		close(fd[0]);
 		close(fd[1]);
@@ -14,15 +25,23 @@ int	fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx)
 	}
 	if (*pid == 0) // only child access here
 	{
+		close(fd[0]);
 		if (idx == 0)
 			dup2(pipex->file_fd[0], STDIN_FILENO);
 		if (idx == pipex->cmds_count -1)
 			dup2(pipex->file_fd[1], STDOUT_FILENO);
 		else
+		{
 			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+		}
 	}
 	else
+	{
+		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+	}
 	return (0);
 }
 
@@ -33,21 +52,14 @@ int	spawn_child(t_pipex *pipex, char **envp, int idx)
 
 	if (fork_and_pipe(pipex, fd, &pid, idx) != 0)
 		return (-1);
-	// pipex->pids[idx] = pid;
 	if (pid == 0)
 	{
 		if (pipex->fullpath[idx])
 			execve(pipex->fullpath[idx], pipex->argv[idx], envp);
 		else
 			ft_dprintf(STDERR_FILENO, "%s: command not found\n", *pipex->argv[idx]);
-		// ft_error("command not found\n", pipex->argv[idx]);
 		ft_clean_pipex(pipex);
 		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		close(fd[1]);
-		close(fd[0]);
 	}
 	pipex->return_status = wait_processes(&pid, pipex->cmds_count);
 	return (0);

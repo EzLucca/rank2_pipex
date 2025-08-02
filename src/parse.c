@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/02 19:14:31 by edlucca           #+#    #+#             */
+/*   Updated: 2025/08/02 20:14:30 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/pipex.h"
 
@@ -12,11 +23,12 @@ void    ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 	pipex->argv = ft_calloc(sizeof(char **) + 1, pipex->cmds_count);
 	if (!pipex->fullpath || !pipex->argv)
 	{
-		ft_free_array(pipex->fullpath);
-		ft_free_2d_array(pipex->argv);
-		pipex->fullpath = NULL;
-		pipex->argv = NULL;
-		return ;
+		// ft_free_array(pipex->fullpath);
+		// ft_free_2d_array(pipex->argv);
+		// pipex->fullpath = NULL;
+		// pipex->argv = NULL;
+		// return ;
+		ft_clean_pipex(pipex);
 	}
 	i = 1;
 	while (++i < argc - 1)

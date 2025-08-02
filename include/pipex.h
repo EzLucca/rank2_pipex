@@ -41,7 +41,7 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp);
 void	ft_check_args(t_pipex *pipex,int argc, char **argv);
 void	ft_clean_pipex(t_pipex *pipex);
 void	ft_error(char *str, char **argv);
-void	ft_free_2d_array(char ***array);
+void	ft_free_1d_array(char **array);
+void	ft_free_2d_array(char ***array, int n);
 
 #endif // !PIPEX_H
-

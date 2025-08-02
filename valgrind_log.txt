@@ -1,0 +1,23 @@
+==67729== Memcheck, a memory error detector
+==67729== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==67729== Using Valgrind-3.25.1 and LibVEX; rerun with -h for copyright info
+==67729== Command: ./pipex Makefile cat wc\ -l outfile
+==67729== Parent PID: 67728
+==67729== 
+==67729== 
+==67729== FILE DESCRIPTORS: 3 open (2 inherited) at exit.
+==67729== Open file descriptor 0:
+==67729==    at 0x498CA2B: dup2 (dup2.c:29)
+==67729==    by 0x4001329: fork_and_pipe (main.c:42)
+==67729==    by 0x4001376: spawn_child (main.c:53)
+==67729==    by 0x400159E: main (main.c:97)
+==67729== 
+==67729== 
+==67729== HEAP SUMMARY:
+==67729==     in use at exit: 0 bytes in 0 blocks
+==67729==   total heap usage: 84 allocs, 84 frees, 1,772 bytes allocated
+==67729== 
+==67729== All heap blocks were freed -- no leaks are possible
+==67729== 
+==67729== For lists of detected and suppressed errors, rerun with: -s
+==67729== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

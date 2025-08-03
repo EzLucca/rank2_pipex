@@ -1,0 +1,16 @@
+total 156
+drwxr-xr-x  8 duds duds  4096  3. 8. 21:30 .
+drwxr-xr-x 20 duds duds  4096  2. 8. 19:35 ..
+drwxr-xr-x  3 duds duds  4096  3. 8. 21:30 build
+drwxr-xr-x  7 duds duds  4096  3. 8. 20:20 .git
+drwxr-xr-x  2 duds duds  4096  3. 8. 14:53 include
+drwxr-xr-x  3 duds duds  4096  2. 8. 19:13 lib
+-rw-r--r--  1 duds duds   955  3. 8. 13:36 Makefile
+-rw-r--r--  1 duds duds     0  3. 8. 21:36 outfile
+-rwxr-xr-x  1 duds duds 44848  3. 8. 21:30 pipex
+-rw-r--r--  1 duds duds  2008  2. 8. 19:13 README.md
+drwxr-xr-x  2 duds duds  4096  3. 8. 21:30 src
+drwxr-xr-x  4 duds duds  4096  3. 8. 21:33 tester
+-rw-r--r--  1 duds duds 62266  2. 8. 19:13 tester_pipex.sh
+-rw-r--r--  1 duds duds   980  2. 8. 21:27 valgrind_log.txt
+-rwxr-xr-x  1 duds duds   489  2. 8. 19:17 valgrind_report.sh

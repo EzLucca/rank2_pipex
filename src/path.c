@@ -42,8 +42,8 @@ char	*ft_find_path(char *cmd, char **envp)
 	char	**paths;
 	char	*full_path;
 
-	if (access(cmd, F_OK) == 0)
-		return (ft_substr(cmd, 0, ft_strlen(cmd)));
+	if (!cmd || !*cmd ||access(cmd, F_OK) == 0)
+		return (ft_strdup(""));
 	paths = ft_get_env_paths(envp);
 	if (!paths)
 		return (NULL); // might need review

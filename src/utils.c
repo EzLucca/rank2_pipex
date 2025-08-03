@@ -42,12 +42,22 @@ void	ft_free_2d_array(char ***array, int n)
 	free(array);
 }
 
-void	ft_error(char *str, char **argv)
+void	ft_exit(int code, char *param1, void *param2)
 {
-	ft_putstr_fd(*argv, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	perror(str);
-	exit(EXIT_FAILURE);
+	t_pipex	*pipex;
+
+	pipex = (t_pipex *)param2;
+	ft_clean_pipex(pipex);
+	if (param1)
+	{
+		if (code == 21 && ft_strchr(param1, '/'))
+			ft_dprintf(STDERR_FILENO, "%s: Is a directory\n", param1);
+		else if (code == 127)
+			ft_dprintf(STDERR_FILENO, "%s: command not found\n", param1);
+		else
+			ft_dprintf(STDERR_FILENO, "%s\n", param1);
+	}
+	exit(code);
 }
 
 void	ft_clean_pipex(t_pipex *pipex)
@@ -69,4 +79,21 @@ void	ft_clean_pipex(t_pipex *pipex)
 		unlink(INVALID_INPUT_PATH);
 	// ft_memset(pipex, 0, sizeof(t_pipex));
 	free(pipex);
+}
+
+void	handle_files(char *filename)
+{
+
+	if (errno == EISDIR)
+		ft_dprintf(STDERR_FILENO, "%s: Is a directory\n", filename);
+	else if (errno == ENOTDIR)
+		ft_dprintf(STDERR_FILENO, "pipex: %s: Not a directory\n", filename);
+	else if (errno == EACCES)
+		ft_dprintf(STDERR_FILENO, "pipex: %s: Permission denied\n", filename);
+	else if (errno == ENOENT)
+		ft_dprintf(STDERR_FILENO, "pipex: %s: No such file or directory\n", filename);
+	else
+		ft_dprintf(STDERR_FILENO, "pipex: %s: Error opening\n", filename);
+	// ft_clean_pipex(pipex);
+	// exit(errno);
 }

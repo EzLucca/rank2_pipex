@@ -27,9 +27,14 @@ int	fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx)
 	{
 		close(fd[0]);
 		if (idx == 0)
-			dup2(pipex->file_fd[0], STDIN_FILENO);
+			if (dup2(pipex->file_fd[0], STDIN_FILENO) < 0)
+				ft_exit(errno, "dup2 (stdin) failed", pipex);	
 		if (idx == pipex->cmds_count -1)
-			dup2(pipex->file_fd[1], STDOUT_FILENO);
+		{
+			if (dup2(pipex->file_fd[1], STDOUT_FILENO) < 0)
+				// ft_exit(errno, "dup2 (stdout) failed", pipex);	
+				return (1);
+		}
 		else
 		{
 			dup2(fd[1], STDOUT_FILENO);
@@ -51,7 +56,7 @@ int	spawn_child(t_pipex *pipex, char **envp, int idx)
 	int		fd[2];
 
 	if (fork_and_pipe(pipex, fd, &pid, idx) != 0)
-		return (-1);
+		return (1);
 	if (pid == 0)
 	{
 		if (pipex->fullpath[idx])
@@ -95,7 +100,7 @@ int	main(int argc, char **argv, char **envp)
 	while (i < pipex->cmds_count)
 	{
 		if (spawn_child(pipex, envp, i) != 0)
-			return (ft_clean_pipex(pipex), ft_error("", argv), 127);
+			return (ft_clean_pipex(pipex), 1);
 		i++;
 	}
 	status = pipex->return_status;

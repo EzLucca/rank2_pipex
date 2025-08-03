@@ -39,31 +39,30 @@ void    ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 		path = ft_find_path(cmd[0], envp);
 		if (!path)
 			ft_free_array(cmd);
-			// ft_clean_pipex(pipex);
+		// ft_clean_pipex(pipex);
+		if (!path || access(path, F_OK) == -1) 
+			ft_dprintf(STDERR_FILENO, "%s: command not found\n", argv[i]);
 		pipex->fullpath[i - 2] = path;
 		// ft_printf("fullpath[%d]: %s\n", i, pipex->fullpath[i - 2 - pipex->here_doc]); // TESTING:
-		pipex->argv[i - 2] = cmd;
+		// pipex->argv[i - 2] = cmd;
+		pipex->argv[i - 2] = &argv[i - 2];
 	}
 }
 
 int	get_files(t_pipex *pipex, int argc, char **argv)
 {
-	// if (pipex->here_doc)
-	// 	pipex->file_fd[1] = open(argv[4], O_RDWR | O_CREAT | O_APPEND, 0644);
-	// else
-	if (access(argv[1], F_OK) == -1)
+	pipex->file_fd[0] = open(argv[1], O_RDONLY);
+	if (pipex->file_fd[0] == -1)
 	{
-		perror("infile");
-		pipex->file_fd[0] = open(INVALID_INPUT_PATH, O_RDONLY | O_CREAT, 0644);
+		handle_files(argv[1]);
 		pipex->invalid_input = true;
 	}
-	else
-		pipex->file_fd[0] = open(argv[1], O_RDONLY);
 	pipex->file_fd[1] = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pipex->file_fd[1] == -1)
 	{
-		perror("outfile");
-		exit(EXIT_FAILURE);
+		handle_files(argv[argc - 1]);
+		// ft_clean_pipex(pipex);
+		// exit(EXIT_FAILURE);
 	}
 	return (1);
 }

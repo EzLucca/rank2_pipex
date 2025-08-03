@@ -39,7 +39,7 @@ clean:
 	@make --no-print-directory -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -rf $(NAME) outfile
+	rm -rf $(NAME)
 	@make --no-print-directory fclean -C $(LIBFT_DIR)
 
 re: fclean all

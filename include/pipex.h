@@ -7,6 +7,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <errno.h>
 # include "../lib/libft/include/libft.h"
 
 # define HERE_DOC_PATH ".pipex_here_doc"
@@ -40,8 +41,10 @@ char	**ft_get_env_paths(char **envp);
 void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp);
 void	ft_check_args(t_pipex *pipex,int argc, char **argv);
 void	ft_clean_pipex(t_pipex *pipex);
-void	ft_error(char *str, char **argv);
+// void	ft_error(char *str, char **argv);
 void	ft_free_1d_array(char **array);
 void	ft_free_2d_array(char ***array, int n);
+void	handle_files(char *filename);
+void	ft_exit(int code, char *param1, void *param2);
 
 #endif // !PIPEX_H

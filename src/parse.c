@@ -23,16 +23,13 @@ void    ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 	while (++i < argc - 1)
 	{
 		cmd = ft_split(argv[i], ' ');
-		if (!cmd|| !cmd[0])
-		{
-			ft_free_array(cmd);
-			ft_clean_pipex(pipex);
-			exit(EXIT_FAILURE);
-		}
-		path = ft_find_path(cmd[0], envp);
+		if (*cmd && access(*cmd, F_OK) == -1)
+			path = ft_find_path(cmd[0], envp);
+		else
+			path = *cmd;
 		if (!path || !path[0] || access(path, F_OK) == -1) 
 			ft_dprintf(STDERR_FILENO, "%s: command not found\n", argv[i]);
-		pipex->fullpath[i - 2] = path;
+		pipex->path[i - 2] = path;
 		pipex->argv[i - 2] = cmd;
 	}
 }
@@ -41,10 +38,7 @@ int	get_files(t_pipex *pipex, int argc, char **argv)
 {
 	pipex->file_fd[0] = open(argv[1], O_RDONLY);
 	if (pipex->file_fd[0] == -1)
-	{
 		handle_files(argv[1]);
-		pipex->invalid_input = true;
-	}
 	pipex->file_fd[1] = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pipex->file_fd[1] == -1)
 	{
@@ -63,10 +57,10 @@ void	ft_check_args(t_pipex *pipex,int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	ft_memset(pipex->pipe_fd, -1, sizeof(pipex->pipe_fd));
-	pipex->cmds_count = argc - 3 - pipex->here_doc;
-	pipex->fullpath = ft_calloc(sizeof(char *) + 1, pipex->cmds_count);
+	pipex->cmds_count = argc - 3;
+	pipex->path = ft_calloc(sizeof(char *) + 1, pipex->cmds_count);
 	pipex->argv = ft_calloc(sizeof(char **) + 1, pipex->cmds_count);
-	if (!pipex->fullpath || !pipex->argv)
+	if (!pipex->path || !pipex->argv)
 	{
 		ft_dprintf(STDERR_FILENO, "Malloc failure");
 		ft_clean_pipex(pipex);

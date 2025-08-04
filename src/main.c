@@ -23,7 +23,7 @@ int	fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx)
 		close(fd[1]);
 		return (-1);
 	}
-	if (*pid == 0) // only child access here
+	if (*pid == 0)
 	{
 		close(fd[0]);
 		if (idx == 0)
@@ -59,10 +59,8 @@ int	spawn_child(t_pipex *pipex, char **envp, int idx)
 		return (1);
 	if (pid == 0)
 	{
-		if (pipex->fullpath[idx])
-			execve(pipex->fullpath[idx], pipex->argv[idx], envp);
-		// else
-			// ft_dprintf(STDERR_FILENO, "%s: command not found\n", *pipex->argv[idx]);
+		if (pipex->path[idx])
+			execve(pipex->path[idx], pipex->argv[idx], envp);
 		ft_clean_pipex(pipex);
 		exit(127);
 	}

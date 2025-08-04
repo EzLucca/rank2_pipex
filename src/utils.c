@@ -17,8 +17,6 @@ void	ft_free_1darray(char **array, int n)
 	int	i;
 
 	i = -1;
-	// if (!array || *array)
-	//        return;
 	if (!array)
 	       return;
 	if (n == -1)
@@ -75,12 +73,10 @@ void	ft_clean_pipex(t_pipex *pipex)
 		close(pipex->file_fd[1]);
 	if (pipex->argv)
 		ft_free_2d_array(pipex->argv, pipex->cmds_count);
-	if (pipex->fullpath)
-		ft_free_1darray(pipex->fullpath, pipex->cmds_count);
+	if (pipex->path)
+		ft_free_1darray(pipex->path, pipex->cmds_count);
 	if (pipex->pids)
 		free(pipex->pids);
-	if (pipex->invalid_input)
-		unlink(INVALID_INPUT_PATH);
 	free(pipex);
 }
 

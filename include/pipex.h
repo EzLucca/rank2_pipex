@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 18:10:05 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/04 18:12:16 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/04 18:27:09 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_pipex
 	char	***argv;
 	char	**cmd;
 	int		file_fd[2];
-	int		pipe_fd[2][2];
+	int		pipe_fd[2];
 	int		cmds_count;
 	int		return_status;
 	pid_t	*pids;

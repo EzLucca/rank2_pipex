@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:15:09 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/02 20:16:36 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/04 18:17:36 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_free_1darray(char **array, int n)
 
 	i = -1;
 	if (!array)
-	       return;
+		return ;
 	if (n == -1)
 		while (array[++i])
 			free(array[i]);
@@ -35,7 +35,7 @@ void	ft_free_2d_array(char ***array, int n)
 
 	i = -1;
 	if (!array)
-        return;
+		return ;
 	if (n == -1)
 		while (array[++i])
 			ft_free_1darray(array[i], -1);
@@ -66,7 +66,6 @@ void	ft_exit(int code, char *param1, void *param2)
 
 void	ft_clean_pipex(t_pipex *pipex)
 {
-
 	if (pipex->file_fd[0] != -1)
 		close(pipex->file_fd[0]);
 	if (pipex->file_fd[1] != -1)
@@ -82,7 +81,6 @@ void	ft_clean_pipex(t_pipex *pipex)
 
 void	handle_files(char *filename)
 {
-
 	if (errno == EISDIR)
 		ft_dprintf(STDERR_FILENO, "%s: Is a directory\n", filename);
 	else if (errno == ENOTDIR)
@@ -90,7 +88,8 @@ void	handle_files(char *filename)
 	else if (errno == EACCES)
 		ft_dprintf(STDERR_FILENO, "pipex: %s: Permission denied\n", filename);
 	else if (errno == ENOENT)
-		ft_dprintf(STDERR_FILENO, "pipex: %s: No such file or directory\n", filename);
+		ft_dprintf(STDERR_FILENO, "pipex: %s: No such file or directory\n",
+			filename);
 	else
 		ft_dprintf(STDERR_FILENO, "pipex: %s: Error opening\n", filename);
 }

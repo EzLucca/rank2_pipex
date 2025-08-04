@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf_hex_fd.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/04 18:08:46 by edlucca           #+#    #+#             */
+/*   Updated: 2025/08/04 18:09:00 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 #include "../include/libft.h"
 
-static int	ft_print_base_fd(unsigned long nbr, unsigned int base, char *str, int fd)
+static int	ft_print_base_fd(unsigned long nbr, unsigned int base, char *str,
+		int fd)
 {
 	int	index;
 	int	len;

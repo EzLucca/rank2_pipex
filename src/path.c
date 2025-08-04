@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:14:36 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/02 19:15:04 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/04 18:11:39 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ char	**ft_get_env_paths(char **envp)
 	path = NULL;
 	while (envp[++i])
 	{
-		if(ft_strncmp(command, envp[i], ft_strlen(command)) == 0
-				&& envp[i][ft_strlen(command)] == '=')
+		if (ft_strncmp(command, envp[i], ft_strlen(command)) == 0
+			&& envp[i][ft_strlen(command)] == '=')
 		{
 			path = ft_strchr(envp[i], '=') + 1;
 			break ;
@@ -42,7 +42,7 @@ char	*ft_find_path(char *cmd, char **envp)
 	char	**paths;
 	char	*full_path;
 
-	if (!cmd || !*cmd ||access(cmd, F_OK) == 0)
+	if (!cmd || !*cmd || access(cmd, F_OK) == 0)
 		return (ft_strdup(""));
 	paths = ft_get_env_paths(envp);
 	if (!paths)

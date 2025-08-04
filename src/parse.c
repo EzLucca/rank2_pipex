@@ -6,17 +6,17 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:14:31 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/02 20:14:30 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/04 18:14:16 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-void    ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
+void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 {
-	int     i;
-	char    **cmd;
-	char    *path;
+	int		i;
+	char	**cmd;
+	char	*path;
 
 	cmd = NULL;
 	i = 1;
@@ -27,7 +27,7 @@ void    ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 			path = ft_find_path(cmd[0], envp);
 		else
 			path = *cmd;
-		if (!path || !path[0] || access(path, F_OK) == -1) 
+		if (!path || !path[0] || access(path, F_OK) == -1)
 			ft_dprintf(STDERR_FILENO, "%s: command not found\n", argv[i]);
 		pipex->path[i - 2] = path;
 		pipex->argv[i - 2] = cmd;
@@ -47,7 +47,7 @@ int	get_files(t_pipex *pipex, int argc, char **argv)
 	return (1);
 }
 
-void	ft_check_args(t_pipex *pipex,int argc, char **argv)
+void	ft_check_args(t_pipex *pipex, int argc, char **argv)
 {
 	ft_memset(pipex, 0, sizeof(t_pipex));
 	if (argc != 5)

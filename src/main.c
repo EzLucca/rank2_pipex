@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:14:24 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/02 21:27:36 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/04 18:17:56 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ int	fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx)
 		close(fd[0]);
 		if (idx == 0)
 			if (dup2(pipex->file_fd[0], STDIN_FILENO) < 0)
-				ft_exit(errno, "dup2 (stdin) failed", pipex);	
+				ft_exit(errno, "dup2 (stdin) failed", pipex);
 		if (idx == pipex->cmds_count -1)
 		{
 			if (dup2(pipex->file_fd[1], STDOUT_FILENO) < 0)
-				// ft_exit(errno, "dup2 (stdout) failed", pipex);	
 				return (1);
 		}
 		else

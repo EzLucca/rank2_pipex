@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_dprintf.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/04 18:08:06 by edlucca           #+#    #+#             */
+/*   Updated: 2025/08/04 18:09:43 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 #include "../include/libft.h"
@@ -18,7 +29,8 @@ int	format_specifier_fd(int fd, const char *format, va_list *arg_ptr)
 	else if (*format == 'u')
 		count += ft_print_unbr_fd(va_arg(*arg_ptr, unsigned int), fd);
 	else if (*format == 'x' || *format == 'X')
-		count += ft_print_hex_fd(va_arg(*arg_ptr, unsigned int), *format == 'X', fd);
+		count += ft_print_hex_fd(va_arg(*arg_ptr, unsigned int),
+				*format == 'X', fd);
 	else if (*format == '%')
 		count += ft_putchar_fd('%', fd);
 	if (*format == '\0')
@@ -48,7 +60,7 @@ int	ft_dprintf(int fd, const char *format, ...)
 	while (*format)
 	{
 		if (*format == '%' && format_validation(format + 1) != 0 && format++)
-			len = format_specifier_fd(fd, format,&arg_ptr);
+			len = format_specifier_fd(fd, format, &arg_ptr);
 		else
 			len = write(fd, format, 1);
 		if (len == -1)

@@ -61,10 +61,10 @@ int	spawn_child(t_pipex *pipex, char **envp, int idx)
 	{
 		if (pipex->fullpath[idx])
 			execve(pipex->fullpath[idx], pipex->argv[idx], envp);
-		else
-			ft_dprintf(STDERR_FILENO, "%s: command not found\n", *pipex->argv[idx]);
+		// else
+			// ft_dprintf(STDERR_FILENO, "%s: command not found\n", *pipex->argv[idx]);
 		ft_clean_pipex(pipex);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	pipex->return_status = wait_processes(&pid, pipex->cmds_count);
 	return (0);

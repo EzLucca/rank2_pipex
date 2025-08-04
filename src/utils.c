@@ -17,6 +17,10 @@ void	ft_free_1darray(char **array, int n)
 	int	i;
 
 	i = -1;
+	// if (!array || *array)
+	//        return;
+	if (!array)
+	       return;
 	if (n == -1)
 		while (array[++i])
 			free(array[i]);
@@ -32,6 +36,8 @@ void	ft_free_2d_array(char ***array, int n)
 	int	i;
 
 	i = -1;
+	if (!array)
+        return;
 	if (n == -1)
 		while (array[++i])
 			ft_free_1darray(array[i], -1);
@@ -73,11 +79,8 @@ void	ft_clean_pipex(t_pipex *pipex)
 		ft_free_1darray(pipex->fullpath, pipex->cmds_count);
 	if (pipex->pids)
 		free(pipex->pids);
-	// if (pipex->envp)
-	// 	ft_free_array(pipex->envp);
 	if (pipex->invalid_input)
 		unlink(INVALID_INPUT_PATH);
-	// ft_memset(pipex, 0, sizeof(t_pipex));
 	free(pipex);
 }
 
@@ -94,6 +97,4 @@ void	handle_files(char *filename)
 		ft_dprintf(STDERR_FILENO, "pipex: %s: No such file or directory\n", filename);
 	else
 		ft_dprintf(STDERR_FILENO, "pipex: %s: Error opening\n", filename);
-	// ft_clean_pipex(pipex);
-	// exit(errno);
 }

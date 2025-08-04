@@ -46,7 +46,7 @@ char	*ft_find_path(char *cmd, char **envp)
 		return (ft_strdup(""));
 	paths = ft_get_env_paths(envp);
 	if (!paths)
-		return (NULL); // might need review
+		return (NULL);
 	i = -1;
 	while (paths[++i])
 	{

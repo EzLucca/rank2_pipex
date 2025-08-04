@@ -18,6 +18,7 @@ typedef struct s_pipex
 {
 	char	**fullpath;
 	char	***argv;
+	char	**av;
 	int		file_fd[2];
 	int		pipe_fd[2][2];
 	int		cmds_count;

@@ -64,12 +64,20 @@ void	ft_exit(int code, char *param1, void *param2)
 	exit(code);
 }
 
+void	safe_close(int *fd)
+{
+	if (*fd != -1)
+	{
+		close(*fd);
+		*fd = -1;
+	}
+}
 void	ft_clean_pipex(t_pipex *pipex)
 {
-	if (pipex->file_fd[0] != -1)
-		close(pipex->file_fd[0]);
-	if (pipex->file_fd[1] != -1)
-		close(pipex->file_fd[1]);
+	safe_close(&pipex->file_fd[0]);
+	safe_close(&pipex->file_fd[1]);
+	safe_close(&pipex->pipe_fd[0]);
+	safe_close(&pipex->pipe_fd[1]);
 	if (pipex->argv)
 		ft_free_2d_array(pipex->argv, pipex->cmds_count);
 	if (pipex->path)
@@ -89,7 +97,7 @@ void	handle_files(char *filename)
 		ft_dprintf(STDERR_FILENO, "pipex: %s: Permission denied\n", filename);
 	else if (errno == ENOENT)
 		ft_dprintf(STDERR_FILENO, "pipex: %s: No such file or directory\n",
-			filename);
+				filename);
 	else
 		ft_dprintf(STDERR_FILENO, "pipex: %s: Error opening\n", filename);
 }

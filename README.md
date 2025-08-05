@@ -63,6 +63,9 @@ For gdb debugging
 ```
 set follow-fork-mode child
 ```
+```
+strace -e trace=process,file,desc ./pipex <args>
+```
 ## Fonts
 `https://reactive.so/post/42-a-comprehensive-guide-to-pipex/`
 `https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY`

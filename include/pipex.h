@@ -52,8 +52,6 @@ void	ft_free_1d_array(char **array);
 void	ft_free_2d_array(char ***array, int n);
 void	handle_files(char *filename);
 void	ft_exit(int code, char *param1, void *param2);
-
-
-int	wait_processes(pid_t *pids, int cmds_count);
+void	safe_close(int *fd);
 
 #endif // !PIPEX_H

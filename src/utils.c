@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:15:09 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/04 18:17:36 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/06 19:10:57 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_free_1darray(char **array, int n)
 			if (array[i])
 				free(array[i]);
 	free(array);
+	array = NULL;
 }
 
 void	ft_free_2d_array(char ***array, int n)
@@ -44,6 +45,7 @@ void	ft_free_2d_array(char ***array, int n)
 			if (array[i])
 				ft_free_1darray(array[i], -1);
 	free(array);
+	array = NULL;
 }
 
 void	ft_exit(int code, char *param1, void *param2)

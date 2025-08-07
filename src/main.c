@@ -94,11 +94,7 @@ int	main(int argc, char **argv, char **envp)
 	int		i;
 
 	i = 0;
-	if (!envp || envp[0] == NULL)
-	{
-		ft_dprintf(STDERR_FILENO, "Empty enviroment.\n");
-		return (127);
-	}
+	check_paths(envp, argv);
 	pipex = malloc(sizeof(t_pipex));
 	if (!pipex)
 		return (EXIT_FAILURE);

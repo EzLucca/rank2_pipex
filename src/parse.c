@@ -23,14 +23,14 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 	while (++i < argc - 1)
 	{
 		cmd = ft_split(argv[i], ' ');
-		if (!*cmd || access(*cmd, F_OK) == -1)
+		if (!cmd[0] || access(cmd[0], F_OK) == -1)
 		{
 			path = ft_find_path(cmd[0], envp);
 			if (!path || !path[0] || access(path, F_OK) == -1)
-				ft_dprintf(STDERR_FILENO, "%s: command not found\n", argv[i]);
+				ft_dprintf(STDERR_FILENO, "pipex: %s: command not found\n", argv[i]);
 		}
 		else
-			path = ft_strdup(*cmd);
+			path = ft_strdup(cmd[0]);
 		pipex->path[i - 2] = path;
 		pipex->argv[i - 2] = cmd;
 	}

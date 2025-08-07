@@ -47,5 +47,6 @@ void	ft_free_2d_array(char ***array, int n);
 void	handle_files(char *filename);
 void	ft_exit(int code, char *param1, void *param2);
 void	safe_close(int *fd);
+int		check_paths(char **envp, char **argv);
 
 #endif // !PIPEX_H

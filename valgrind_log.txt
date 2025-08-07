@@ -1,6 +1,0 @@
-==1269761== Memcheck, a memory error detector
-==1269761== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1269761== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==1269761== Command: env -i ./pipex Makefile cat cat outfile5
-==1269761== Parent PID: 1269760
-==1269761== 

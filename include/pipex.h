@@ -25,12 +25,10 @@ typedef struct s_pipex
 {
 	char	**path;
 	char	***argv;
-	char	**cmd;
 	int		file_fd[2];
 	int		pipe_fd[2];
 	int		cmds_count;
 	int		return_status;
-	pid_t	*pids;
 }	t_pipex;
 
 int		wait_processes(pid_t *pid, int cmds_count);

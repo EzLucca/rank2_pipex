@@ -21,10 +21,6 @@
 # include <errno.h>
 # include "../lib/libft/include/libft.h"
 
-# define HERE_DOC_PATH ".pipex_here_doc"
-# define INVALID_INPUT_PATH ".pipex_invalid"
-# define URANDOM_PATH ".pipex_urandom"
-
 typedef struct s_pipex
 {
 	char	**path;

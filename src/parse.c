@@ -22,13 +22,6 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 	i = 1;
 	while (++i < argc - 1)
 	{
-		// if (access(argv[i], F_OK) == 0)
-		// {
-		// 	path = ft_strdup(argv[i]);
-		// 	cmd[0] = ft_strdup(argv[i]);
-		// }
-		// else
-		// {
 		cmd = ft_split(argv[i], ' ');
 		if (*cmd && access(*cmd, F_OK) == -1)
 			path = ft_find_path(cmd[0], envp);
@@ -36,7 +29,6 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 			path = *cmd;
 		if (!path || !path[0] || access(path, F_OK) == -1)
 			ft_dprintf(STDERR_FILENO, "%s: command not found\n", argv[i]);
-		// }
 		pipex->path[i - 2] = path;
 		pipex->argv[i - 2] = cmd;
 	}

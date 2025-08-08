@@ -58,7 +58,9 @@ char	*ft_find_path(char *cmd, char **envp)
 		if (!full_path)
 			return (ft_free_array(paths), NULL);
 		if (access(full_path, F_OK) == 0)
+		{
 			return (ft_free_array(paths), full_path);
+		}
 		free(full_path);
 	}
 	return (ft_free_array(paths), NULL);

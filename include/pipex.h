@@ -49,4 +49,5 @@ void	ft_exit(int code, char *param1, void *param2);
 void	safe_close(int *fd);
 int		check_paths(char **envp, char **argv);
 
+void	close_all(t_pipex *pipex);
 #endif // !PIPEX_H

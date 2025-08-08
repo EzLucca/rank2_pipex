@@ -27,6 +27,7 @@ void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp)
 		{
 			path = ft_find_path(cmd[0], envp);
 			if (!path || !path[0] || access(path, F_OK) == -1)
+				// handle_files(argv[i]);
 				ft_dprintf(STDERR_FILENO, "pipex: %s: command not found\n", argv[i]);
 		}
 		else

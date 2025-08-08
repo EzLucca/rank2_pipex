@@ -17,16 +17,16 @@
 // pipe read: pipex->pipe_fd[0] = 5
 // pipe write: pipex->pipe_fd[1] = 6
 
+// end of first child file_fd[1] and pipe_fd[1] are open
+// end of second child file_fd all open and pipe_fd[1] are open
 int	pe(t_pipex *pipex, pid_t *pid, int idx, char **envp)
 {
 	if (*pid == 0) // only child access here
 	{
-		safe_close(&pipex->pipe_fd[0]);
 		if (idx == 0)
 		{
 			if (dup2(pipex->file_fd[0], STDIN_FILENO) < 0)
 				ft_exit(errno, "dup2 (stdin) failed", pipex);	
-			safe_close(&pipex->file_fd[0]);
 		}
 		if (idx == pipex->cmds_count -1)
 		{
@@ -35,9 +35,7 @@ int	pe(t_pipex *pipex, pid_t *pid, int idx, char **envp)
 		}
 		else
 			dup2(pipex->pipe_fd[1], STDOUT_FILENO);
-		safe_close(&pipex->pipe_fd[1]);
-		safe_close(&pipex->file_fd[0]);
-		safe_close(&pipex->file_fd[1]);
+		close_all(pipex);
 		if (pipex->path[idx])
 			execve(pipex->path[idx], pipex->argv[idx], envp);
 		ft_clean_pipex(pipex);
@@ -46,7 +44,6 @@ int	pe(t_pipex *pipex, pid_t *pid, int idx, char **envp)
 	else
 	{
 		dup2(pipex->pipe_fd[0], STDIN_FILENO);
-		// safe_close(&pipex->pipe_fd[0]);
 		safe_close(&pipex->pipe_fd[1]);
 		safe_close(&pipex->file_fd[0]);
 	}
@@ -62,8 +59,7 @@ int	spawn_child(t_pipex *pipex, char **envp, int idx)
 	pid = fork();
 	if (pid < 0)
 	{
-		safe_close(&pipex->pipe_fd[0]);
-		safe_close(&pipex->pipe_fd[1]);
+		close_all(pipex);
 		return (-1);
 	}
 	if (pe(pipex, &pid, idx, envp) != 0)
@@ -76,15 +72,18 @@ int	wait_processes(pid_t *pid, int cmds_count)
 {
 	int	i;
 	int	status;
+	int	last_status;
 
 	i = 0;
 	while (i < cmds_count)
+	{
 		waitpid(pid[i++], &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status) && WTERMSIG(status))
-		return (128 + WTERMSIG(status));
-	return (EXIT_FAILURE);
+		if (WIFEXITED(status))
+			last_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status) && WTERMSIG(status))
+			last_status = 128 + WTERMSIG(status);
+	}
+	return (last_status);
 }
 
 int	main(int argc, char **argv, char **envp)

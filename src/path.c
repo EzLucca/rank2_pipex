@@ -24,7 +24,7 @@ char	**ft_get_env_paths(char **envp)
 	while (envp[++i])
 	{
 		if (ft_strncmp(command, envp[i], ft_strlen(command)) == 0
-				&& envp[i][ft_strlen(command)] == '=')
+			&& envp[i][ft_strlen(command)] == '=')
 		{
 			path = ft_strchr(envp[i], '=') + 1;
 			break ;
@@ -58,9 +58,7 @@ char	*ft_find_path(char *cmd, char **envp)
 		if (!full_path)
 			return (ft_free_array(paths), NULL);
 		if (access(full_path, F_OK) == 0)
-		{
 			return (ft_free_array(paths), full_path);
-		}
 		free(full_path);
 	}
 	return (ft_free_array(paths), NULL);
@@ -70,7 +68,7 @@ int	check_paths(char **envp, char **argv)
 {
 	if (!envp || envp[0] == NULL)
 	{
-		if(access(argv[2], F_OK) == 0 && access(argv[3], F_OK) == 0)
+		if (access(argv[2], F_OK) == 0 && access(argv[3], F_OK) == 0)
 			return (0);
 		ft_dprintf(STDERR_FILENO, "Empty enviroment.\n");
 		exit(127);

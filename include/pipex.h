@@ -35,25 +35,25 @@ typedef struct s_pipex
 	char	**av;
 }	t_pipex;
 
-// int		get_files(t_pipex *pipex, int argc, char **argv);
-int		get_files(t_pipex *pipex);
 int		wait_processes(pid_t *pid, int cmds_count);
 int		spawn_child(t_pipex *pipex, char **envp, int idx);
-int		fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx);
-char	**ft_get_env_paths(char **envp);
-char	*ft_find_path(char *cmd, char **envp);
-char	*ft_find_path(char *cmd, char **envp);
-char	**ft_get_env_paths(char **envp);
+int		parent_execution(t_pipex *pipex, pid_t *pid, int idx, char **envp);
+void	child_execution(t_pipex *pipex, pid_t *pid, int idx, char **envp);
+
+char	*get_path(char *arg, char **cmd, char **envp);
 void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp);
-void	ft_check_args(t_pipex *pipex, int argc, char **argv);
-void	ft_clean_pipex(t_pipex *pipex);
+void	ft_init_pipex(t_pipex *pipex, int argc, char **argv);
+int		get_files(t_pipex *pipex);
+void	handle_files(char *filename);
+
+int		check_paths(char **envp, char **argv);
+char	*ft_find_path(char *cmd, char **envp);
+char	**ft_get_env_paths(char **envp);
+
 void	ft_free_1d_array(char **array);
 void	ft_free_2d_array(char ***array, int n);
-void	handle_files(char *filename);
 void	ft_exit(int code, char *param1, void *param2);
-void	safe_close(int *fd);
-int		check_paths(char **envp, char **argv);
-
-void	handle_exit(char *filename);
 void	close_all(t_pipex *pipex);
+void	ft_clean_pipex(t_pipex *pipex);
+
 #endif // !PIPEX_H

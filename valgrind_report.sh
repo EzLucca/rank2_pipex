@@ -19,3 +19,5 @@ valgrind --leak-check=full \
 
 # Optional: echo success message
 echo "Valgrind output saved to valgrind_log.txt"
+
+cat valgrind_log.txt

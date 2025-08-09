@@ -15,25 +15,24 @@
 void	ft_free_1darray(char **array, int n)
 {
 	int	i;
+	int	limit;
 
-	i = -1;
 	if (!array)
 		return ;
-	if (n == -1)
-		while (array[++i])
-		{
-			free(array[i]);
-			array[i] = NULL;
-		}
-	else
-		while (++i < n)
-		{
-			if (array[i])
-			{
-				free(array[i]);
-				array[i] = NULL;
-			}
-		}
+	limit = n;
+	if (n < 0)
+	{
+		limit = 0;
+		while (array[limit])
+			limit++;
+	}
+	i = 0;
+	while (i < limit)
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
 	free(array);
 	array = NULL;
 }
@@ -76,27 +75,18 @@ void	ft_exit(int code, char *param1, void *param2)
 
 void	close_all(t_pipex *pipex)
 {
-	safe_close(&pipex->file_fd[0]);
-	safe_close(&pipex->file_fd[1]);
-	safe_close(&pipex->pipe_fd[0]);
-	safe_close(&pipex->pipe_fd[1]);
-}
-
-void	safe_close(int *fd)
-{
-	if (*fd != -1)
-	{
-		close(*fd);
-		*fd = -1;
-	}
+	close(pipex->file_fd[0]);
+	close(pipex->file_fd[1]);
+	close(pipex->pipe_fd[0]);
+	close(pipex->pipe_fd[1]);
 }
 
 void	ft_clean_pipex(t_pipex *pipex)
 {
-	safe_close(&pipex->file_fd[0]);
-	safe_close(&pipex->file_fd[1]);
-	safe_close(&pipex->pipe_fd[0]);
-	safe_close(&pipex->pipe_fd[1]);
+	close(pipex->file_fd[0]);
+	close(pipex->file_fd[1]);
+	close(pipex->pipe_fd[0]);
+	close(pipex->pipe_fd[1]);
 	if (pipex->argv)
 		ft_free_2d_array(pipex->argv, pipex->cmds_count);
 	if (pipex->path)
@@ -104,18 +94,4 @@ void	ft_clean_pipex(t_pipex *pipex)
 	if (pipex->pids)
 		free(pipex->pids);
 	free(pipex);
-}
-void	handle_files(char *filename)
-{
-	if (errno == EISDIR)
-		ft_dprintf(STDERR_FILENO, "%s: Is a directory\n", filename);
-	else if (errno == ENOTDIR)
-		ft_dprintf(STDERR_FILENO, "pipex: %s: Not a directory\n", filename);
-	else if (errno == EACCES)
-		ft_dprintf(STDERR_FILENO, "pipex: %s: Permission denied\n", filename);
-	else if (errno == ENOENT)
-		ft_dprintf(STDERR_FILENO, "pipex: %s: No such file or directory\n",
-				filename);
-	else
-		ft_dprintf(STDERR_FILENO, "pipex: %s: Error opening\n", filename);
 }

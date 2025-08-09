@@ -101,9 +101,10 @@ void	ft_clean_pipex(t_pipex *pipex)
 		ft_free_2d_array(pipex->argv, pipex->cmds_count);
 	if (pipex->path)
 		ft_free_1darray(pipex->path, pipex->cmds_count);
+	if (pipex->pids)
+		free(pipex->pids);
 	free(pipex);
 }
-
 void	handle_files(char *filename)
 {
 	if (errno == EISDIR)

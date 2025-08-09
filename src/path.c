@@ -70,11 +70,10 @@ int	check_paths(char **envp, char **argv)
 {
 	if (!envp || envp[0] == NULL)
 	{
-		if(access(argv[2], F_OK) == -1 && access(argv[3], F_OK) == -1)
-		{
-			ft_dprintf(STDERR_FILENO, "Empty enviroment.\n");
-			exit(127);
-		}
+		if(access(argv[2], F_OK) == 0 && access(argv[3], F_OK) == 0)
+			return (0);
+		ft_dprintf(STDERR_FILENO, "Empty enviroment.\n");
+		exit(127);
 	}
 	return (0);
 }

@@ -15,6 +15,7 @@
 
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -29,12 +30,16 @@ typedef struct s_pipex
 	int		pipe_fd[2];
 	int		cmds_count;
 	int		return_status;
+	int		*pids;
+	int		ac;
+	char	**av;
 }	t_pipex;
 
+// int		get_files(t_pipex *pipex, int argc, char **argv);
+int		get_files(t_pipex *pipex);
 int		wait_processes(pid_t *pid, int cmds_count);
 int		spawn_child(t_pipex *pipex, char **envp, int idx);
 int		fork_and_pipe(t_pipex *pipex, int fd[2], pid_t *pid, int idx);
-int		get_files(t_pipex *pipex, int argc, char **argv);
 char	**ft_get_env_paths(char **envp);
 char	*ft_find_path(char *cmd, char **envp);
 char	*ft_find_path(char *cmd, char **envp);
@@ -49,5 +54,6 @@ void	ft_exit(int code, char *param1, void *param2);
 void	safe_close(int *fd);
 int		check_paths(char **envp, char **argv);
 
+void	handle_exit(char *filename);
 void	close_all(t_pipex *pipex);
 #endif // !PIPEX_H

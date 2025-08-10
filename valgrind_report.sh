@@ -13,11 +13,8 @@ shift
 valgrind --leak-check=full \
          --show-leak-kinds=all \
          --track-fds=yes \
+         --trace-children=yes \
          --track-origins=yes \
-         --log-file="valgrind_log.txt" \
          "$program" "$@"
 
-# Optional: echo success message
-echo "Valgrind output saved to valgrind_log.txt"
 
-cat valgrind_log.txt

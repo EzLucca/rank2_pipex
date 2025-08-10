@@ -51,9 +51,7 @@ int	get_files(t_pipex *pipex)
 	pipex->file_fd[1] = open(pipex->av[pipex->ac - 1], O_CREAT | O_WRONLY
 			| O_TRUNC, 0644);
 	if (pipex->file_fd[1] == -1)
-	{
 		handle_files(pipex->av[pipex->ac - 1]);
-	}
 	return (1);
 }
 
@@ -64,6 +62,7 @@ void	ft_init_pipex(t_pipex *pipex, int argc, char **argv)
 	pipex->ac = argc;
 	pipex->av = argv;
 	pipex->cmds_count = argc - 3;
+	pipex->prev_pipe_read = -1; // added
 	pipex->path = ft_calloc(sizeof(char *), pipex->cmds_count + 1);
 	pipex->argv = ft_calloc(sizeof(char **), pipex->cmds_count + 1);
 	pipex->pids = ft_calloc(sizeof(int), pipex->cmds_count);

@@ -55,22 +55,10 @@ void	ft_free_2d_array(char ***array, int n)
 	array = NULL;
 }
 
-void	ft_exit(int code, char *param1, void *param2)
+void	ft_clean_exit(t_pipex *pipex)
 {
-	t_pipex	*pipex;
-
-	pipex = (t_pipex *)param2;
 	ft_clean_pipex(pipex);
-	if (param1)
-	{
-		if (code == 21 && ft_strchr(param1, '/'))
-			ft_dprintf(STDERR_FILENO, "%s: Is a directory\n", param1);
-		else if (code == 127)
-			ft_dprintf(STDERR_FILENO, "%s: command not found\n", param1);
-		else
-			ft_dprintf(STDERR_FILENO, "%s\n", param1);
-	}
-	exit(code);
+	exit(1);
 }
 
 void	close_all(t_pipex *pipex)

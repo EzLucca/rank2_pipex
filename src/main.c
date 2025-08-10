@@ -12,42 +12,28 @@
 
 #include "../include/pipex.h"
 
-void	child_execution(t_pipex *pipex, pid_t *pid, int idx, char **envp)
+void	child_execution(t_pipex *pipex, int idx, char **envp)
 {
 	if (idx == 0)
 	{
 		if (dup2(pipex->file_fd[0], STDIN_FILENO) < 0)
-			ft_exit(errno, "dup2 (stdin) failed", pipex);
+			ft_clean_exit(pipex);
 	}
 	if (idx == pipex->cmds_count -1)
 	{
 		if (pipex->file_fd[1] < 0 || dup2(pipex->file_fd[1], STDOUT_FILENO) < 0)
-		{
-			ft_clean_pipex(pipex);
-			exit (1);
-		}
+			ft_clean_exit(pipex);
 	}
 	else
-		dup2(pipex->pipe_fd[1], STDOUT_FILENO);
+	{
+		if (dup2(pipex->pipe_fd[1], STDOUT_FILENO) < 0)
+			ft_clean_exit(pipex);
+	}
 	close_all(pipex);
 	if (pipex->path[idx] && access(pipex->path[idx], F_OK) == 0)
 		execve(pipex->path[idx], pipex->argv[idx], envp);
 	ft_clean_pipex(pipex);
 	exit(127);
-}
-
-int	parent_execution(t_pipex *pipex, pid_t *pid, int idx, char **envp)
-{
-	if (*pid == 0)
-		child_execution(pipex, pid, idx, envp);
-	else
-	{
-		dup2(pipex->pipe_fd[0], STDIN_FILENO);
-		close(pipex->pipe_fd[1]);
-		close(pipex->pipe_fd[0]);
-		close(pipex->file_fd[0]);
-	}
-	return (0);
 }
 
 int	spawn_child(t_pipex *pipex, char **envp, int idx)
@@ -58,10 +44,20 @@ int	spawn_child(t_pipex *pipex, char **envp, int idx)
 	if (pipex->pids[idx] < 0)
 	{
 		close_all(pipex);
-		return (-1);
-	}
-	if (parent_execution(pipex, &pipex->pids[idx], idx, envp) != 0)
 		return (1);
+	}
+	if (pipex->pids[idx] == 0)
+		child_execution(pipex, idx, envp);
+	else
+	{
+		if (dup2(pipex->pipe_fd[0], STDIN_FILENO) < 0)
+			ft_clean_exit(pipex);
+		close(pipex->pipe_fd[1]);
+		close(pipex->pipe_fd[0]);
+		close(pipex->file_fd[0]);
+		if (idx == pipex->cmds_count)
+			close(pipex->file_fd[1]);
+	}
 	return (0);
 }
 

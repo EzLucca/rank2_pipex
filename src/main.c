@@ -71,6 +71,7 @@ int	wait_processes(pid_t *pid, int cmds_count)
 	while (i < cmds_count)
 	{
 		waitpid(pid[i], &status, 0);
+		// wait(&status);
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status) && WTERMSIG(status))

@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:14:31 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/06 18:49:28 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/11 16:32:50 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_path(char *arg, char **cmd, char **envp)
 	if (!path || !*path)
 	{
 		if (ft_strchr(arg, '/'))
-			handle_files(arg);
+			handle_error(arg);
 		else
 			ft_dprintf(STDERR_FILENO, "pipex: %s: command not found\n", arg);
 	}
@@ -47,11 +47,11 @@ int	get_files(t_pipex *pipex)
 {
 	pipex->file_fd[0] = open(pipex->av[1], O_RDONLY);
 	if (pipex->file_fd[0] == -1)
-		handle_files(pipex->av[1]);
+		handle_error(pipex->av[1]);
 	pipex->file_fd[1] = open(pipex->av[pipex->ac - 1], O_CREAT | O_WRONLY
 			| O_TRUNC, 0644);
 	if (pipex->file_fd[1] == -1)
-		handle_files(pipex->av[pipex->ac - 1]);
+		handle_error(pipex->av[pipex->ac - 1]);
 	return (1);
 }
 
@@ -62,7 +62,6 @@ void	ft_init_pipex(t_pipex *pipex, int argc, char **argv)
 	pipex->ac = argc;
 	pipex->av = argv;
 	pipex->cmds_count = argc - 3;
-	pipex->prev_pipe_read = -1; // added
 	pipex->path = ft_calloc(sizeof(char *), pipex->cmds_count + 1);
 	pipex->argv = ft_calloc(sizeof(char **), pipex->cmds_count + 1);
 	pipex->pids = ft_calloc(sizeof(int), pipex->cmds_count);
@@ -73,9 +72,11 @@ void	ft_init_pipex(t_pipex *pipex, int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	get_files(pipex);
+	if (pipe(pipex->pipe_fd) == -1)
+		ft_clean_exit(pipex);
 }
 
-void	handle_files(char *filename)
+void	handle_error(char *filename)
 {
 	if (errno == EISDIR)
 		ft_dprintf(STDERR_FILENO, "%s: Is a directory\n", filename);

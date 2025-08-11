@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 18:10:05 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/04 18:27:09 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/11 15:54:05 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,13 @@ typedef struct s_pipex
 {
 	char	**path;
 	char	***argv;
+	char	**av;
+	int		ac;
 	int		file_fd[2];
 	int		pipe_fd[2];
-	int		prev_pipe_read;
 	int		cmds_count;
 	int		return_status;
 	int		*pids;
-	int		ac;
-	char	**av;
 }	t_pipex;
 
 int		wait_processes(pid_t *pid, int cmds_count);
@@ -45,7 +44,7 @@ char	*get_path(char *arg, char **cmd, char **envp);
 void	ft_parse_cmds(t_pipex *pipex, int argc, char **argv, char **envp);
 void	ft_init_pipex(t_pipex *pipex, int argc, char **argv);
 int		get_files(t_pipex *pipex);
-void	handle_files(char *filename);
+void	handle_error(char *filename);
 
 int		check_paths(char **envp, char **argv);
 char	*ft_find_path(char *cmd, char **envp);

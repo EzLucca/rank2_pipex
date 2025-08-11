@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:14:24 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/06 19:19:20 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/11 16:58:17 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,30 @@ void	child_execution(t_pipex *pipex, int idx, char **envp)
 {
 	if (idx == 0)
 	{
-		if (dup2(pipex->file_fd[0], STDIN_FILENO) < 0)
-			ft_clean_exit(pipex);
-	}
-	if (idx == pipex->cmds_count -1)
-	{
-		if (pipex->file_fd[1] < 0 || dup2(pipex->file_fd[1], STDOUT_FILENO) < 0)
+		if (dup2(pipex->file_fd[0], STDIN_FILENO) < 0
+			|| dup2(pipex->pipe_fd[1], STDOUT_FILENO) < 0)
 			ft_clean_exit(pipex);
 	}
 	else
 	{
-		if (dup2(pipex->pipe_fd[1], STDOUT_FILENO) < 0)
+		if (dup2(pipex->pipe_fd[0], STDIN_FILENO) < 0
+			|| dup2(pipex->file_fd[1], STDOUT_FILENO) < 0)
 			ft_clean_exit(pipex);
 	}
 	close_all(pipex);
 	if (pipex->path[idx] && access(pipex->path[idx], F_OK) == 0)
+	{
 		execve(pipex->path[idx], pipex->argv[idx], envp);
+		handle_error(pipex->path[idx]);
+		ft_clean_pipex(pipex);
+		exit(126);
+	}
 	ft_clean_pipex(pipex);
 	exit(127);
 }
 
 int	spawn_child(t_pipex *pipex, char **envp, int idx)
 {
-	if (pipe(pipex->pipe_fd) == -1)
-		return (-1);
 	pipex->pids[idx] = fork();
 	if (pipex->pids[idx] < 0)
 	{
@@ -48,37 +48,33 @@ int	spawn_child(t_pipex *pipex, char **envp, int idx)
 	}
 	if (pipex->pids[idx] == 0)
 		child_execution(pipex, idx, envp);
-	else
-	{
-		if (dup2(pipex->pipe_fd[0], STDIN_FILENO) < 0)
-			ft_clean_exit(pipex);
+	if (idx == 0)
 		close(pipex->pipe_fd[1]);
+	else
 		close(pipex->pipe_fd[0]);
-		close(pipex->file_fd[0]);
-		if (idx == pipex->cmds_count)
-			close(pipex->file_fd[1]);
-	}
 	return (0);
 }
 
 int	wait_processes(pid_t *pid, int cmds_count)
 {
-	int	i;
-	int	status;
-	int	last_status;
+	int		status;
+	pid_t	term_pid;
+	int		exit_status;
 
-	i = 0;
-	while (i < cmds_count)
+	exit_status = EXIT_FAILURE;
+	while (cmds_count > 0)
 	{
-		waitpid(pid[i], &status, 0);
-		// wait(&status);
-		if (WIFEXITED(status))
-			last_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status) && WTERMSIG(status))
-			last_status = 128 + WTERMSIG(status);
-		i++;
+		term_pid = waitpid(-1, &status, 0);
+		if (term_pid == -1)
+			return (1);
+		if (term_pid == pid[0] || term_pid == pid[1])
+		{
+			cmds_count--;
+			if (term_pid == pid[1] && (WIFEXITED(status)))
+				exit_status = WEXITSTATUS(status);
+		}
 	}
-	return (last_status);
+	return (exit_status);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -105,6 +101,7 @@ int	main(int argc, char **argv, char **envp)
 			return (ft_clean_pipex(pipex), 1);
 		i++;
 	}
+	close_all(pipex);
 	status = wait_processes(pipex->pids, pipex->cmds_count);
 	return (ft_clean_pipex(pipex), status);
 }

@@ -71,10 +71,7 @@ void	close_all(t_pipex *pipex)
 
 void	ft_clean_pipex(t_pipex *pipex)
 {
-	close(pipex->file_fd[0]);
-	close(pipex->file_fd[1]);
-	close(pipex->pipe_fd[0]);
-	close(pipex->pipe_fd[1]);
+	close_all(pipex);
 	if (pipex->argv)
 		ft_free_2d_array(pipex->argv, pipex->cmds_count);
 	if (pipex->path)

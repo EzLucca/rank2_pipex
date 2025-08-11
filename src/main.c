@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:14:24 by edlucca           #+#    #+#             */
-/*   Updated: 2025/08/11 16:58:17 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/08/11 19:13:06 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 	int		status;
 	int		i;
 
-	if (argc < 5)
+	if (argc != 5)
 	{
 		ft_dprintf(STDERR_FILENO, "Usage: ./pipex infile cmd1 cmd2 outfile\n");
 		exit(EXIT_FAILURE);
